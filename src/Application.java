@@ -10,6 +10,6 @@ public class Application extends JFrame {
         setVisible(true);
     }
     public static void main(String[] args) {
-        Application application = new Application(400,350);
+        Application application = new Application(500,450);
     }
 }
