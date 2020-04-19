@@ -1,18 +1,21 @@
-public class Missile extends Sprite {
+public class Alien extends Sprite {
     private int velocity;
-    private final int B_WIDTH;
+    private final int INITIAL_X;
     private boolean isVisible;
-    public Missile(int x, int y) {
+    public Alien(int x, int y) {
         super(x, y);
+        velocity = -2;
         isVisible = true;
-        B_WIDTH = 500;
-        loadImage("/images/missile.png");
-        this.velocity = 2;
+        INITIAL_X = 500;
+        loadImage("/images/alien.png");
     }
 
     public void move(){
         x += velocity;
-        if(x > B_WIDTH) isVisible = false;
+        if(x < 0){
+//            isVisible = false;
+            x = INITIAL_X;
+        }
     }
 
     public void setVisible(boolean visible) {

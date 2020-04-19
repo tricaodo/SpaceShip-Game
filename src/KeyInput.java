@@ -8,7 +8,6 @@ public class KeyInput extends KeyAdapter {
     }
 
     public void keyPressed(KeyEvent e){
-        System.out.println("Press");
         spaceShip.keyPressed(e);
     }
 
