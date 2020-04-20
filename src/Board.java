@@ -14,6 +14,7 @@ public class Board extends JPanel implements ActionListener {
     private final int B_WIDTH;
     private final int B_HEIGHT;
     private Timer timer;
+    private boolean gameOver;
     private final int DELAY;
 
     private final int[][] positions = {
@@ -39,6 +40,7 @@ public class Board extends JPanel implements ActionListener {
         this.spaceShip = new SpaceShip(40, 60);
         this.missiles = this.spaceShip.getMissiles();
         this.aliens = new ArrayList<>();
+        gameOver = false;
         initAliens();
         addKeyListener(new KeyInput(spaceShip));
         setFocusable(true);
@@ -87,15 +89,23 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private void collision(){
-        for(Missile missile: missiles){
+    private void collision() {
+        for (Missile missile : missiles) {
             Rectangle missileBound = missile.getBounds();
-            for(Alien alien: aliens){
+            for (Alien alien : aliens) {
                 Rectangle alienBound = alien.getBounds();
-                if(missileBound.intersects(alienBound)){
+                if (missileBound.intersects(alienBound)) {
                     missile.setVisible(false);
                     alien.setVisible(false);
                 }
+            }
+        }
+
+        Rectangle shipBound = spaceShip.getBounds();
+        for (Alien alien : aliens) {
+            Rectangle alienBound = alien.getBounds();
+            if (shipBound.intersects(alienBound)) {
+                gameOver = true;
             }
         }
     }
@@ -103,10 +113,16 @@ public class Board extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        updateSpaceShip(g);
-        updateMissiles(g);
-        updateAliens(g);
-        collision();
+        if (!gameOver) {
+            updateSpaceShip(g);
+            updateMissiles(g);
+            updateAliens(g);
+            collision();
+        } else {
+            timer.stop();
+            JOptionPane.showConfirmDialog(this,
+                    "Do you want to play again?", "Game Over", JOptionPane.YES_NO_OPTION);
+        }
     }
 
     @Override
